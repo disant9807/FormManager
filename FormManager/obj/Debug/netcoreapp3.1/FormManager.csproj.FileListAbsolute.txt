@@ -1,0 +1,10 @@
+C:\Users\Денис\source\repos\FormManager\FormManager\bin\Debug\netcoreapp3.1\appsettings.Development.json
+C:\Users\Денис\source\repos\FormManager\FormManager\bin\Debug\netcoreapp3.1\appsettings.json
+C:\Users\Денис\source\repos\FormManager\FormManager\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+C:\Users\Денис\source\repos\FormManager\FormManager\bin\Debug\netcoreapp3.1\FormManager.exe
+C:\Users\Денис\source\repos\FormManager\FormManager\obj\Debug\netcoreapp3.1\FormManager.csprojAssemblyReference.cache
+C:\Users\Денис\source\repos\FormManager\FormManager\obj\Debug\netcoreapp3.1\FormManager.AssemblyInfoInputs.cache
+C:\Users\Денис\source\repos\FormManager\FormManager\obj\Debug\netcoreapp3.1\FormManager.AssemblyInfo.cs
+C:\Users\Денис\source\repos\FormManager\FormManager\obj\Debug\netcoreapp3.1\FormManager.RazorTargetAssemblyInfo.cache
+C:\Users\Денис\source\repos\FormManager\FormManager\obj\Debug\netcoreapp3.1\staticwebassets\FormManager.StaticWebAssets.Manifest.cache
+C:\Users\Денис\source\repos\FormManager\FormManager\obj\Debug\netcoreapp3.1\staticwebassets\FormManager.StaticWebAssets.xml
