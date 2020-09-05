@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace FormManager.Models
 {
@@ -13,7 +14,9 @@ namespace FormManager.Models
 
         public string Name { get; set; } = string.Empty;
 
-        public DateTime PubDate { get; set; } = DateTime.UtcNow;
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-yyyy-MM}")]
+        public DateTime PubDate { get; set; } = DateTime.Now;
 
         public InputField(string content, string name)
         {

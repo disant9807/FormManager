@@ -4,11 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using FormManager.Models;
 using FormManager.Services;
+using FormManager.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FormManager.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class FormController : Controller
     {
         private readonly IFormService formService;
@@ -17,7 +20,9 @@ namespace FormManager.Controllers
             this.formService = formService;
         }
 
-        public async Task AddForm()
+        [Route("/api")]
+        [HttpPost]
+        public async Task<JsonResult> AddForm()
         {
             IList<InputField> fields = new List<InputField>();
             Request.Form.ToList().ForEach(p => fields.Add(new InputField(p.Value, p.Key)));
@@ -25,81 +30,42 @@ namespace FormManager.Controllers
             Form form = new Form();
             form.inputFields = fields;
 
-            await formService.SaveForm(form);
-        }
-        // GET: FormController
-        public ActionResult Index()
-        {
-            return View();
+            bool result = await formService.SaveForm(form);
+            return await Task.FromResult(result == false
+                ? Json(new ErrorResult(true))
+                : Json(new ErrorResultData<Form>(false, form)));
         }
 
-        // GET: FormController/Details/5
-        public ActionResult Details(int id)
+        [Route("/api")]
+        [HttpGet]
+        public async Task<ActionResult<DtableResult<List<Form>>>> GerForm(int per_page, int current_page, string sort, string sort_dir, string search_params = null)
         {
-            return View();
+            // return await formService.GetDataRecord();
+            IAsyncEnumerable<Form> myData = formService.GetDataRecord(per_page, current_page, sort, sort_dir, search_params);
+            
+            List<Form> data = new List<Form>();
+            await foreach (Form i in myData)
+                data.Add(i);
+
+            return await Task.FromResult(new DtableResult<List<Form>>(per_page, current_page, sort, sort_dir, data));
         }
 
-        // GET: FormController/Create
-        public ActionResult Create()
+        [Route("/api/{id?}")]
+        [HttpGet]
+        public async Task<Form> GetFormByID(int id)
         {
-            return View();
+            var form = await formService.GetFormById(id);
+            return await Task.FromResult(form);
         }
 
-        // POST: FormController/Create
+        [Route("/api/{id?}/delete")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<JsonResult> DeleteFormByID(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: FormController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: FormController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: FormController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: FormController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var result = await formService.DeleteForm(id);
+            return await Task.FromResult(result == false
+                ? Json(new ErrorResult(true))
+                : Json(new ErrorResult(false)));
         }
     }
 }
